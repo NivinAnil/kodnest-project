@@ -19,6 +19,7 @@ export default function handler(req, res) {
       'SELECT fName FROM `users` where email=?',
       [email],
       function (err, results, fields) {
+        console.log({ name: results });
         if (results)
           res.status(200).json({ result: true, name: results[0].fName })
 

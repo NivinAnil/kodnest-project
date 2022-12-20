@@ -17,11 +17,12 @@ export default function handler(req, res) {
       res.status(200).json({ result: false, email: email })
     }
 
-    connection.execute(
-      'SELECT * FROM `users` where email=? and password=?',
+    connection.query(
+      'SELECT * FROM users where email=? and password=?',
       [email, password],
       function (err, results, fields) {
-        if (results)
+        console.log(results);
+        if (results.length != 0)
           res.status(200).json({ result: true, email: email })
         else
           res.status(200).json({ result: false, email: email })

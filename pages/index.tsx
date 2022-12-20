@@ -5,24 +5,45 @@ import { validateConfig } from "next/dist/server/config-shared";
 
 export default function Login() {
   const router = useRouter();
-
+  const [regMessage, setRegMessage] = useState(router.query.message ?? "");
+  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  useEffect(() => {
+    setMessage("");
+  }, [formData]);
+
   const validateUser = async () => {
+    console.log(formData);
+
+    if (formData.email === "" || formData.password === "") {
+      return;
+    }
     const apiUrlEndpoint = `http://localhost:3000/api/login?email=${formData.email}&password=${formData.password}`;
     const response = await fetch(apiUrlEndpoint);
     const res = await response.json();
 
     if (res.result) {
-      router.push({ pathname: "/home", query: { email: res.email } }, "/home");
+      router.push({ pathname: "/home", query: { email: res.email } });
+    } else {
+      setMessage("invalid Email or Password");
     }
   };
 
   return (
     <>
+      <div
+        className={
+          router.query.message
+            ? "text-center my-2 mx-80 rounded-xl p-2 border-spacing-12 border-gray-800 bg-slate-100"
+            : ""
+        }
+      >
+        <h1 className="text-green-500">{regMessage}</h1>
+      </div>
       <div className="flex flex-wrap h-2/3 justify-center p-5 items-center">
         <form className="w-full max-w-sm">
           <h1 className="text-center p-5 uppercase font-bold text-gray-800">
@@ -44,6 +65,7 @@ export default function Login() {
                 type="text"
                 placeholder="abc@email.com"
                 value={formData.email}
+                required
                 onChange={(e) => {
                   setFormData({
                     ...formData,
@@ -69,6 +91,7 @@ export default function Login() {
                 type="password"
                 placeholder="******************"
                 autoComplete="true"
+                required
                 value={formData.password}
                 onChange={(e) => {
                   setFormData({
@@ -78,6 +101,11 @@ export default function Login() {
                 }}
               />
             </div>
+          </div>
+          <div>
+            <h2 className="text-red-500 uppercase p-4 text-center">
+              {message}
+            </h2>
           </div>
           <div className="flex flex-wrap justify-around">
             <button

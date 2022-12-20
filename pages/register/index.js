@@ -1,6 +1,44 @@
-import React from "react";
+import { validateConfig } from "next/dist/server/config-shared";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 const Register = () => {
+    const router = useRouter();
+    const [regFormData, setRegFormData] = useState({
+        fname: '',
+        lname: '',
+        email: '',
+        password: '',
+        gender: '',
+        address: '',
+        dob: '',
+    });
+
+    const [message, setMessage] = useState('');
+    // useEffect(() => {
+    //     console.log({ regFormData });
+    // }, [regFormData])
+
+
+    const valNReg = async () => {
+
+        const response = await fetch(`http://localhost:3000/api/register?fName=${regFormData.fname}&lName=${regFormData.lname}&email=${regFormData.email}&address=${regFormData.address}&password=${regFormData.password}&DOB=${regFormData.dob}&gender=${regFormData.gender}`);
+        const res = await response.json();
+
+        setMessage(res.message)
+        if (!res.status) {
+            router.push({ pathname: "/", query: { message: res.message } });
+        }
+        else if (res.status) {
+            router.push({ pathname: "/register", query: { message: res.message } });
+        }
+
+    }
+
+
+
+
+
     return (
 
         <>
@@ -8,7 +46,7 @@ const Register = () => {
                 Registration
             </h1>
             <div className="flex justify-center items-center p-5">
-                <form className="w-full max-w-lg">
+                <form className="w-full max-w-lg" >
                     <div className="flex flex-wrap -mx-3 mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <label
@@ -22,6 +60,8 @@ const Register = () => {
                                 id="grid-first-name"
                                 type="text"
                                 placeholder="Jane"
+                                value={regFormData.fname}
+                                onChange={(e) => { setRegFormData({ ...regFormData, fname: e.currentTarget.value }) }}
                             />
 
                         </div>
@@ -37,6 +77,8 @@ const Register = () => {
                                 id="grid-last-name"
                                 type="text"
                                 placeholder="Doe"
+                                value={regFormData.lname}
+                                onChange={(e) => { setRegFormData({ ...regFormData, lname: e.currentTarget.value }) }}
                             />
                         </div>
                     </div>
@@ -53,6 +95,8 @@ const Register = () => {
                                 id="grid-first-name"
                                 type="email"
                                 placeholder="abc@gmail.com"
+                                value={regFormData.email}
+                                onChange={(e) => { setRegFormData({ ...regFormData, email: e.currentTarget.value }) }}
                             />
                         </div>
                         <div className="w-full md:w-1/2 px-3">
@@ -67,6 +111,8 @@ const Register = () => {
                                 id="grid-password"
                                 type="password"
                                 placeholder="******************"
+                                value={regFormData.password}
+                                onChange={(e) => { setRegFormData({ ...regFormData, password: e.currentTarget.value }) }}
                             />
                         </div>
                     </div>
@@ -81,6 +127,8 @@ const Register = () => {
                             <textarea
                                 className="resize-none appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 id="grid-address"
+                                value={regFormData.address}
+                                onChange={(e) => { setRegFormData({ ...regFormData, address: e.currentTarget.value }) }}
                             />
                         </div>
                     </div>
@@ -92,24 +140,28 @@ const Register = () => {
                             >
                                 Gender
                             </label>
-                            <div className="relative justify-between">
-                                <select
-                                    className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    id="grid-state"
-                                >
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                    <option>Other</option>
-                                </select>
-                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <svg
-                                        className="fill-current h-4 w-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                    >
-                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                    </svg>
+                            <div className="relative justify-between ">
+                                <div className="flex flex-col">
+                                    <div>
+                                        <input type="radio"
+                                            id="option1"
+                                            name="options"
+                                            value="M"
+                                            onChange={(e) => { setRegFormData({ ...regFormData, gender: e.target.value }) }} />
+                                        <label className="m-1" htmlFor="option1">Male</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="option2" name="options" value="F"
+                                            onChange={(e) => { setRegFormData({ ...regFormData, gender: e.target.value }) }} />
+                                        <label className="m-1" htmlFor="option2">Female</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="option3" name="options" value="O"
+                                            onChange={(e) => { setRegFormData({ ...regFormData, gender: e.target.value }) }} />
+                                        <label className="m-1" htmlFor="option3">Other</label>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                         <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
@@ -123,12 +175,16 @@ const Register = () => {
                                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 id="grid-zip"
                                 type="date"
+                                value={regFormData.dob}
+                                onChange={(e) => { setRegFormData({ ...regFormData, dob: e.currentTarget.value }) }}
                             />
                         </div>
                     </div>
+                    <div><h2>{message}</h2></div>
                     <div className="flex flex-wrap justify-center">
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-
+                            type="button"
+                            onClick={() => { valNReg() }}
                         >
                             Register
                         </button>
