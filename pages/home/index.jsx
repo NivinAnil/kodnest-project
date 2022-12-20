@@ -2,6 +2,8 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+import { saveAs } from "file-saver";
+
 const Home=()=>{
 const router=useRouter();
     const [name,setName]=useState('name');
@@ -22,6 +24,16 @@ const router=useRouter();
     fetchData().catch(console.error)
 
     });
+
+    const  exportFile=async()=>{
+        const email=router.query.email;
+        const apiUrlEndpoint = `http://localhost:3000/api/getfile?email=${email}`;
+        const response = await fetch(apiUrlEndpoint);
+
+        const blob = await response.blob();
+        saveAs(blob, 'data1.xlsx');
+    };
+
     
     return (
     <>
@@ -29,7 +41,10 @@ const router=useRouter();
         <div className="border-blue-100 border-2 flex flex-col items-center justify-center mt-10">
             <h1 className="uppercase text-center">Welcome {name}</h1>
             <div>
-            <button className="m-2 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full">
+            <button 
+            className="m-2 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full"
+            onClick={()=>{exportFile()}}
+            >
             Export
             </button>
             </div>

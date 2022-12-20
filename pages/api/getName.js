@@ -11,11 +11,15 @@ const connection = mysql.createConnection({
 export default function handler(req, res) {
   try {
     const email = req.query.email;
+
+    if (!email) {
+      res.status(200).json({ result: false, email: email })
+    }
     connection.execute(
       'SELECT fName FROM `users` where email=?',
       [email],
       function (err, results, fields) {
-        if (results.length == 1)
+        if (results)
           res.status(200).json({ result: true, name: results[0].fName })
 
       }

@@ -17,7 +17,7 @@ export default function Login() {
     const res = await response.json();
 
     if (res.result) {
-      router.replace({ pathname: "/home", query: { email: res.email } });
+      router.push({ pathname: "/home", query: { email: res.email } }, "/home");
     }
   };
 
