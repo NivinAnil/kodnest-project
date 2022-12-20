@@ -2,7 +2,11 @@ import React from "react";
 
 const Register = () => {
     return (
+
         <>
+            <h1 className="text-center p-5 uppercase font-bold text-gray-800">
+                Registration
+            </h1>
             <div className="flex justify-center items-center p-5">
                 <form className="w-full max-w-lg">
                     <div className="flex flex-wrap -mx-3 mb-6">
@@ -123,7 +127,9 @@ const Register = () => {
                         </div>
                     </div>
                     <div className="flex flex-wrap justify-center">
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+
+                        >
                             Register
                         </button>
                     </div>
