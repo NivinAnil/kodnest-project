@@ -2,6 +2,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+create `.env.local` file and add
+
+```
+HOST=<localhost>
+USER=<mysql-user>
+DATABASE=<database-name>
+PASSWORD=<database-password>
+```
+
 First, run the development server:
 
 ```bash
