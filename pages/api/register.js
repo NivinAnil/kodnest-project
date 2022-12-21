@@ -1,12 +1,4 @@
-
-import mysql from 'mysql2';
-// create the connection to database
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.USER,
-    database: process.env.DATABASE,
-    password: process.env.PASSWORD
-});
+import connection from "./connection";
 
 export default function handler(req, res) {
     try {
@@ -27,7 +19,7 @@ export default function handler(req, res) {
             'SELECT * FROM `users` where email=?',
             [email, password],
             function (err, results, fields) {
-                if (results.length != 0) {
+                if (results && results.length != 0) {
                     res.status(200).json({ message: 'Mail already exists', status: false });
                     return;
                 }
@@ -35,13 +27,13 @@ export default function handler(req, res) {
         );
 
 
-        const sql = 'INSERT INTO users (Fname,Lname,email,password,address,gender,DOB) VALUES (?, ?, ?, ?, ?, ?,?)';
+        const sql = 'INSERT INTO user_info (Fname,Lname,email,password,address,gender,DOB) VALUES (?, ?, ?, ?, ?, ?,?)';
         const values = [fName, lName, email, password, address, gender, DOB];
 
         connection.query(sql, values, function (error, results) {
             if (error) throw error;
             console.log('1 record inserted');
-            res.status(200).json({ message: 'Registration successful...', status: false })
+            res.status(200).json({ message: 'Registration successful...', status: true })
         });
 
         connection.end();

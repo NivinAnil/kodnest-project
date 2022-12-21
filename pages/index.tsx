@@ -5,6 +5,7 @@ import { validateConfig } from "next/dist/server/config-shared";
 
 export default function Login() {
   const router = useRouter();
+
   const [regMessage, setRegMessage] = useState(router.query.message ?? "");
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
@@ -17,6 +18,18 @@ export default function Login() {
   }, [formData]);
 
   const validateUser = async () => {
+    const validateEmail = (email: string) => {
+      return email.match(
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+    };
+
+    if (!validateEmail(formData.email)) {
+      setMessage("Invalid Email");
+      alert("Invalid Email");
+      return;
+    }
+
     console.log(formData);
 
     if (formData.email === "" || formData.password === "") {
@@ -29,7 +42,8 @@ export default function Login() {
     if (res.result) {
       router.push({ pathname: "/home", query: { email: res.email } });
     } else {
-      setMessage("invalid Email or Password");
+      setMessage("Incorrect Email or Password");
+      alert("Incorrect Email or Password");
     }
   };
 

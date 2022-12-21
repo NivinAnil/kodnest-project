@@ -16,7 +16,7 @@ export default function handler(req, res) {
       res.status(200).json({ result: false, email: email })
     }
     connection.execute(
-      'SELECT fName FROM `users` where email=?',
+      'SELECT fName FROM `user_info` where email=?',
       [email],
       function (err, results, fields) {
         console.log({ name: results });

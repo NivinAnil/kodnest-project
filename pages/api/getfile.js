@@ -1,12 +1,5 @@
 import Excel from 'exceljs';
-import mysql from 'mysql2';
-// create the connection to database
-const connection = mysql.createConnection({
-    host: process.env.HOST,
-    user: process.env.USER,
-    database: process.env.DATABASE,
-    password: process.env.PASSWORD
-});
+import connection from './connection';
 
 export default async function handler(req, res) {
     try {
@@ -19,7 +12,7 @@ export default async function handler(req, res) {
 
         const rows = await new Promise((resolve, reject) => {
             connection.execute(
-                'SELECT Fname,Lname,Email,Address,Gender,DOB FROM `users` where email=?',
+                'SELECT Fname,Lname,Email,Address,Gender,DOB FROM `user_info` where email=?',
                 [email],
                 function (err, results, fields) {
                     if (results) {

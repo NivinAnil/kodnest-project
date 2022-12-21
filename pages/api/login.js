@@ -1,12 +1,4 @@
-
-import mysql from 'mysql2';
-// create the connection to database
-const connection = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  database: process.env.DATABASE,
-  password: process.env.PASSWORD
-});
+import connection from './connection';
 
 export default function handler(req, res) {
   try {
@@ -18,7 +10,7 @@ export default function handler(req, res) {
     }
 
     connection.query(
-      'SELECT * FROM users where email=? and password=?',
+      'SELECT * FROM user_info where email=? and password=?',
       [email, password],
       function (err, results, fields) {
         console.log(results);
