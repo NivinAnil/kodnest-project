@@ -1,12 +1,8 @@
 
 import mysql from 'mysql2';
+import connection from './connection';
 // create the connection to database
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  database: 'KodNestProject',
-  password: 'niv12345'
-});
+
 
 export default function handler(req, res) {
   try {
