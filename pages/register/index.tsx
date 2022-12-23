@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 const Register = () => {
   const router = useRouter();
   const [regFormData, setRegFormData] = useState({
-    fname: "",
-    lname: "",
+    fName: "",
+    lName: "",
     email: "",
     password: "",
     gender: "",
@@ -15,32 +15,35 @@ const Register = () => {
   });
 
   const [message, setMessage] = useState("");
+  const [resStatus, setResStatus] = useState(false);
   // useEffect(() => {
   //     console.log({ regFormData });
   // }, [regFormData])
 
   const valNReg = async () => {
-    const validateEmail = (email: string) => {
-      return email.match(
-        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-    };
-
-    if (!validateEmail(regFormData.email)) {
-      setMessage("Invalid Email");
-      alert("Invalid Email");
+    if (
+      regFormData.fName == "" ||
+      regFormData.lName == "" ||
+      regFormData.email == "" ||
+      regFormData.password == "" ||
+      regFormData.address == "" ||
+      regFormData.gender == "" ||
+      regFormData.dob == ""
+    ) {
+      alert("Incomplete Input Fields....");
       return;
     }
     const response = await fetch(
-      `http://localhost:3000/api/register?fName=${regFormData.fname}&lName=${regFormData.lname}&email=${regFormData.email}&address=${regFormData.address}&password=${regFormData.password}&DOB=${regFormData.dob}&gender=${regFormData.gender}`
+      `http://localhost:3000/api/register?fName=${regFormData.fName}&lName=${regFormData.lName}&email=${regFormData.email}&address=${regFormData.address}&password=${regFormData.password}&DOB=${regFormData.dob}&gender=${regFormData.gender}`
     );
     const res = await response.json();
 
     setMessage(res.message);
-    if (!res.status) {
+    setResStatus(res.status);
+    if (res.status) {
       router.push({ pathname: "/", query: { message: res.message } });
-    } else if (res.status) {
-      router.push({ pathname: "/register", query: { message: res.message } });
+    } else {
+      alert(res.message);
     }
   };
 
@@ -64,11 +67,11 @@ const Register = () => {
                 id="grid-first-name"
                 type="text"
                 placeholder="Jane"
-                value={regFormData.fname}
+                value={regFormData.fName}
                 onChange={(e) => {
                   setRegFormData({
                     ...regFormData,
-                    fname: e.currentTarget.value,
+                    fName: e.currentTarget.value,
                   });
                 }}
               />
@@ -85,11 +88,11 @@ const Register = () => {
                 id="grid-last-name"
                 type="text"
                 placeholder="Doe"
-                value={regFormData.lname}
+                value={regFormData.lName}
                 onChange={(e) => {
                   setRegFormData({
                     ...regFormData,
-                    lname: e.currentTarget.value,
+                    lName: e.currentTarget.value,
                   });
                 }}
               />
@@ -247,7 +250,9 @@ const Register = () => {
             </div>
           </div>
           <div>
-            <h2>{message}</h2>
+            <h2 className={!resStatus ? "text-center text-red-500" : ""}>
+              {message}
+            </h2>
           </div>
           <div className="flex flex-wrap justify-center">
             <button

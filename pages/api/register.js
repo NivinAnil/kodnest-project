@@ -16,11 +16,13 @@ export default function handler(req, res) {
 
         // checking if email already exists
         connection.query(
-            'SELECT * FROM `users` where email=?',
-            [email, password],
+            'SELECT * FROM user_info where email=?',
+            [email],
             function (err, results, fields) {
-                if (results && results.length != 0) {
+                if (results.length != 0) {
+                    console.log(results);
                     res.status(200).json({ message: 'Mail already exists', status: false });
+                    connection.end();
                     return;
                 }
             }
@@ -31,7 +33,12 @@ export default function handler(req, res) {
         const values = [fName, lName, email, password, address, gender, DOB];
 
         connection.query(sql, values, function (error, results) {
-            if (error) throw error;
+            if (error) {
+                console.log(error);
+                res.status(200).json({ error: error, status: false })
+                connection.end();
+                return;
+            }
             console.log('1 record inserted');
             res.status(200).json({ message: 'Registration successful...', status: true })
         });

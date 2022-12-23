@@ -9,6 +9,7 @@ export default function handler(req, res) {
       res.status(200).json({ result: false, email: email })
     }
 
+
     connection.query(
       'SELECT * FROM user_info where email=? and password=?',
       [email, password],
@@ -18,12 +19,15 @@ export default function handler(req, res) {
           res.status(200).json({ result: true, email: email })
         else
           res.status(200).json({ result: false, email: email })
+
       }
     );
 
+    connection.end();
   }
   catch (error) {
     res.status(200).json({ error: error.message })
+    connection.end();
   }
 }
 

@@ -16,8 +16,10 @@ export default function handler(req, res) {
       [email],
       function (err, results, fields) {
         console.log({ name: results });
-        if (results)
+        if (results && results.length != 0)
           res.status(200).json({ result: true, name: results[0].fName })
+        else
+          res.status(200).json({ result: false, name: "" })
 
       }
     );

@@ -28,7 +28,16 @@ const Home = () => {
     const response = await fetch(apiUrlEndpoint);
 
     const blob = await response.blob();
-    saveAs(blob, "data1.xlsx");
+    saveAs(blob, name + ".xlsx");
+  };
+
+  const exportAllDataFile = async () => {
+    const email = router.query.email;
+    const apiUrlEndpoint = `http://localhost:3000/api/getalldata`;
+    const response = await fetch(apiUrlEndpoint);
+
+    const blob = await response.blob();
+    saveAs(blob, name + ".xlsx");
   };
 
   return (
@@ -39,7 +48,7 @@ const Home = () => {
           <button
             className="m-2 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full"
             onClick={() => {
-              exportFile();
+              exportAllDataFile();
             }}
           >
             Export

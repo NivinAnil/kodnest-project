@@ -18,17 +18,17 @@ export default function Login() {
   }, [formData]);
 
   const validateUser = async () => {
-    const validateEmail = (email: string) => {
-      return email.match(
-        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-    };
+    // const validateEmail = (email: string) => {
+    //   return email.match(
+    //     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    //   );
+    // };
 
-    if (!validateEmail(formData.email)) {
-      setMessage("Invalid Email");
-      alert("Invalid Email");
-      return;
-    }
+    // if (!validateEmail(formData.email)) {
+    //   setMessage("Invalid Email");
+    //   alert("Invalid Email");
+    //   return;
+    // }
 
     console.log(formData);
 
@@ -129,7 +129,7 @@ export default function Login() {
                 validateUser();
               }}
             >
-              Sign Up
+              Sign In
             </button>
             <button
               className="shadow bg-gray-300 border-purple-200 hover:bg-gray-800 hover:text-white focus:shadow-outline focus:outline-none text-gray-700 font-bold py-2 px-4 rounded"
