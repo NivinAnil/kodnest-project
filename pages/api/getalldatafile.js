@@ -1,4 +1,4 @@
-
+import Excel from 'exceljs';
 import connection from './connection';
 
 export default async function handler(req, res) {
@@ -19,11 +19,8 @@ export default async function handler(req, res) {
             );
         });
 
-        const data = {
-            keys: null,
-            data: []
-        }
-
+        const workbook = new Excel.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet 1');
 
         const keys = []
         let x = 0;
@@ -36,17 +33,25 @@ export default async function handler(req, res) {
 
                 }
                 values.push(element[i]);
+
             }
             if (x == 0) {
-                data.keys = keys;
+                worksheet.addRow(keys);
+                x = 1;
             }
-            data.data.push(values)
+            worksheet.addRow(values);
         });
 
 
 
-        console.log(data);
-        res.status(200).json({ data: data })
+
+
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', 'attachment; filename=data.xlsx');
+
+        // Send the Excel file
+        const buffer = await workbook.xlsx.writeBuffer();
+        res.send(buffer);
 
     }
     catch (error) {

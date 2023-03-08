@@ -23,11 +23,11 @@ export default function handler(req, res) {
       }
     );
 
-    connection.end();
+
   }
   catch (error) {
     res.status(200).json({ error: error.message })
-    connection.end();
+
   }
 }
 

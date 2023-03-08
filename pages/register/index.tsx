@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const Register = () => {
-  const router = useRouter();
-  const [regFormData, setRegFormData] = useState({
+  const form = {
     fName: "",
     lName: "",
     email: "",
@@ -12,7 +11,9 @@ const Register = () => {
     gender: "",
     address: "",
     dob: "",
-  });
+  };
+  const router = useRouter();
+  const [regFormData, setRegFormData] = useState(form);
 
   const [message, setMessage] = useState("");
   const [resStatus, setResStatus] = useState(false);
